@@ -4,7 +4,6 @@
 #include <cstdlib>
 #include <ctime>
 #include <iomanip>
-
 using namespace std;
 
 struct Patient
@@ -53,10 +52,13 @@ void patientManagement()
     while (running) {
     int option;
     displayTitle("Patient Mangement");
-    cout << "1) Add new patient" << endl;
+    cout << "1) Add New Patient" << endl;
     cout << "2) View Patient Records" << endl;
     cout << "3) Search Patient by ID" << endl;
     cout << "4) Update Patient Info" << endl;
+    cout << "5) Delete Patient Record" << endl;
+    cout << endl;
+    cout << "Enter choice: ";
     cin >> option;
 
     // Note: cin >> ws is for clearing the buffer (removing /n)
@@ -208,6 +210,45 @@ void patientManagement()
                    cout << "No Patient Found with this ID.";
                }               
                break;
+           }
+
+           case 5: {
+                displayTitle("DELETE PATIENT RECORD");
+                string id;
+                cout << "Enter Patient ID: ";
+                getline(cin >> ws, id);
+
+                bool found = false;
+                for (int i = 0; i < patients.size(); i++) {
+                    Patient p = patients[i];
+                    if (p.id == id) {
+                       displayTitle("Current Information");
+                       found = true;
+                       cout << "1. Id:" << setw(25 + 14 + 3) << p.id << endl;
+                       cout << "2. Name:" << setw(25 + 12 + 3) << p.name << endl;
+                       cout << "3. Age:" << setw(25 + 13 + 3) << p.age << endl;
+                       cout << "4. Contact:" << setw(25 + 9 + 3) << p.contact << endl;
+                       cout << "5. Disease / Symptom:" << setw(25 + 3) << p.status << endl << endl;
+
+                       cout << "Do you want to delete this record(y/n): ";
+                       char ans;
+                       cin >> ans;
+
+                       if (ans == 'y') {
+                           patients.erase(patients.begin() + i);
+                           cout << "Deleting record..." << endl;
+                           cout << "Record Deleted!!";
+                       } 
+                    }
+                }
+
+               if (found == false) {
+                   cout << "No Patient Found with this ID.";
+               }
+           }
+
+           default: {
+                cout << "Invalid Optoin.";
            }
         }
 
