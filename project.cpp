@@ -6,6 +6,15 @@
 #include <iomanip>
 using namespace std;
 
+struct Fee
+{
+    float doctor;
+    float medical;
+    float room;
+    float total;
+    string status = "Unpaid";
+};
+
 struct Patient
 {
     string id;
@@ -14,8 +23,11 @@ struct Patient
     char gender;    
     string contact;     
     string status; // disease or symptom
+    Fee charges; 
 };
 
+vector<Patient> patients;
+Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergies"};
 
 // Clear the screen and display the title
 void displayTitle(string title) 
@@ -26,6 +38,7 @@ void displayTitle(string title)
     cout << "====================================" << endl;
     cout << endl << endl;
 }
+
 
 // Generate a random password
 // TODO: Add random alphabet as well 
@@ -41,13 +54,30 @@ string generateId(int length)
     return id; 
 }
 
+bool search(string id, vector<Patient> patients) 
+{
+    for (Patient p: patients) {
+        if (p.id == p.id) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void repchar(char ch, int n) 
+{
+    for (int i = 0; i < n; i++)
+    {
+        cout << ch;
+    }
+    cout << endl;
+}
+
 void patientManagement() 
 {
-    vector<Patient> patients;
-    Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergies"};
     bool running = true;
 
-    patients.push_back(testPatient);
     // Patient vector for dynamically adding patients
     while (running) {
     int option;
@@ -261,12 +291,53 @@ void patientManagement()
             running = false;
         }
     }
+}
 
+void billingSystem() {
+    displayTitle("Billing System");
+    cout << "1. Generate Patient Bill" << endl;
+    cout << "2. View All Bills" << endl;
+    cout << "3. Update Payment Status" << endl;
+    cout << "4. Back to Main Menu" << endl << endl; 
+    int choice;
+    cout << "Enter choice: ";
+    cin >> choice;
     
+    switch (choice) {
+        case 1: {
+            displayTitle("Generate Bill"); 
+            cout << "Enter patient id: ";
+            string id;
+            getline(cin >> ws, id);
+            for (Patient& p: patients) {
+                if (p.id == id) {
+                    cout << endl;
+                    cout << "Enter Doctor Fee: ";
+                    cin >> p.charges.doctor;
+                    cout << "Enter Medical Fee: ";
+                    cin >> p.charges.medical;
+                    cout << "Enter Room Fee: ";
+                    cin >> p.charges.room; 
+                    p.charges.total = p.charges.doctor + p.charges.medical + p.charges.room;
+                    repchar('-', 30);    
+                    cout << "Bill Summary" << endl;
+                    repchar('-', 30);
+                    cout << "Doctor Fee: " << setw(25) << p.charges.doctor << endl;
+                    cout << "Medical Fee: " << setw(25) << p.charges.medical << endl;
+                    cout << "Room Fee: " << setw(25) << p.charges.doctor << endl;
+                    repchar('-', 30);
+                    cout << "Total Amount: " << setw(25) << p.charges.total << "PKR" << endl;
+                    cout << "Payment Status: " << setw(25) << p.charges.status;
+                }
+            } 
+        }
+    }    
 }
 
 void mainMenu() {
-    patientManagement();
+    patients.push_back(testPatient);
+    // patientManagement();
+    billingSystem();
 }
 int main() {
     mainMenu();
