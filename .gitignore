@@ -1,3 +1,7 @@
 *.swp
 output
 *.swo
+*.swn
+*.swm
+test.cpp
+

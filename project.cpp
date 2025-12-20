@@ -6,6 +6,7 @@
 #include <iomanip>
 using namespace std;
 
+// Contains all the information about patient expenses
 struct Fee
 {
     float doctor;
@@ -15,6 +16,7 @@ struct Fee
     string status = "Unpaid";
 };
 
+// Contains information about patient
 struct Patient
 {
     string id;
@@ -25,6 +27,18 @@ struct Patient
     string status; // disease or symptom
     Fee charges; 
 };
+
+struct Doctor
+{
+    string name;
+    string doctors_id;
+    string Speciality;
+    string doctors_experience;
+    string contact;
+    string meeting;
+};
+
+
 
 vector<Patient> patients;
 Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergies"};
@@ -54,16 +68,7 @@ string generateId(int length)
     return id; 
 }
 
-bool search(string id, vector<Patient> patients) 
-{
-    for (Patient p: patients) {
-        if (p.id == p.id) {
-            return true;
-        }
-    }
 
-    return false;
-}
 
 void repchar(char ch, int n) 
 {
@@ -277,7 +282,7 @@ void patientManagement()
                }
            }
 
-           default: {
+           dkefault: {
                 cout << "Invalid Optoin.";
            }
         }
@@ -293,6 +298,236 @@ void patientManagement()
     }
 }
 
+void searchings(vector<Doctor> doctors, string id)
+{
+    bool found = false;
+
+    for (Doctor d : doctors)
+    {
+        if (id == d.doctors_id)
+        {
+            cout << "The doctor is available" << endl;
+            found = true;
+            repchar('_', 130);
+            cout << "Name " << setw(20)
+                 << "Doctor ID " << setw(20)
+                 << "Doctor Speciality" << setw(20)
+                 << "Past Experience " << setw(20)
+                 << "Contact number" << setw(20)
+                 << "Meeting hours" << endl;
+
+            cout << d.name << setw(20)
+                 << d.doctors_id << setw(20)
+                 << d.Speciality << setw(20)
+                 << d.doctors_experience << setw(20)
+                 << d.contact << setw(20)
+                 << d.meeting << endl;
+            repchar('_', 130);
+        }
+    }
+
+    if (found == false)
+    {
+        cout << " doctor is not present in this hospital" << endl;
+    }
+
+    cout << endl << endl << endl;
+}
+
+void table(vector<Doctor> doctors)
+{
+    repchar('_', 70);
+    cout << "Name " << setw(20)
+         << "Doctor ID " << setw(20)
+         << "Doctor Speciality" << setw(20)
+         << "Past Experience" << setw(20)
+         << "contact number" << setw(20)
+         << "Meeting hours" << endl;
+
+    for (Doctor d : doctors)
+    {
+        cout << d.name << setw(20)
+             << d.doctors_id << setw(20)
+             << d.Speciality << setw(20)
+             << d.doctors_experience << setw(20)
+             << d.contact << setw(20)
+             << d.meeting << endl;
+    }
+
+    cout << endl << endl;
+}
+
+void doctorManagement()
+{
+
+    vector<Doctor> doctors;
+
+    displayTitle("Doctor Management");
+
+        string id; 
+
+    int choice;
+
+    while (true)
+    {
+        cout << "1) Add Doctor" << endl;
+        cout << "2) View All Doctors" << endl;
+        cout << "3) Search Doctor" << endl;
+        cout << "4) Update Doctor Details" << endl;
+        cout << "5) Delete Doctor" << endl;
+
+        cin >> choice;
+
+        switch (choice)
+        {
+        case 1:
+            {
+            Doctor d;
+            cout << "Enter Name of Doctor : ";
+            getline(cin >> ws, d.name);
+
+            cout << endl;
+            cout << "Your doctor id is : ";
+            d.doctors_id = generateId(5);
+            cout << d.doctors_id << endl;
+
+            cout << "Enter Speciality of Doctor : ";
+            getline(cin >> ws, d.Speciality);
+
+            cout << endl;
+            cout << "Enter Doctors Past Experience : ";
+            getline(cin >> ws, d.doctors_experience);
+
+            cout << endl;
+            cout << "Enter Doctors contact number : ";
+            cin >> d.contact;
+
+            cout << endl;
+            cout << "Enter the Meeting hours of Doctors : ";
+            getline(cin >> ws, d.meeting);
+
+            cout << endl;
+            doctors.push_back(d);
+            break;
+        }
+
+        case 2: {
+            cout << "The list of all doctor is as Follows... " << endl;
+            table(doctors);
+            break;
+        }
+
+        case 3:
+        {
+            cout << "Enter the Id of Doctor : ";
+            cin >> id;
+            cout << endl;
+            searchings(doctors, id);
+            break;
+        }
+
+        case 4:
+        {
+            bool running = true;
+            cout << "Enter the Id of The doctor whose detail you want to udoctorsdate : ";
+            getline(cin >> ws, id);
+
+            for (int i = 0; i < doctors.size(); i++)
+            {
+                if (doctors[i].doctors_id == id)
+                {
+                    Doctor d = doctors[i];
+                    cout << "Doctor found!" << endl;
+                    cout << "Current Information" << endl;
+                    cout << "1. Id:" << setw(25) << d.doctors_id << endl;
+                    cout << "2. Name:" << setw(25) << d.name << endl;
+                    cout << "3. Past Experience" << setw(25) << d.doctors_experience << endl;
+                    cout << "4. Contact:" << setw(25) << d.contact << endl;
+                    cout << "5. Speciality" << setw(25) << d.Speciality << endl << endl;
+
+                    while (running)
+                    {
+                        cout << "Which field do you want to update?" << endl;
+                        cout << "1. Name" << endl;
+                        cout << "2. Speciality" << endl;
+                        cout << "3. Past Experience" << endl;
+                        cout << "4. Contact" << endl;
+                        cout << "5. Meeting hours" << endl;
+                        cout << "6. Cancel Update" << endl << endl;
+
+                        int choice;
+                        cout << "Enter Choice" << endl;
+                        cin >> choice;
+
+                        switch (choice)
+                        {
+                        case 1:
+                            cout << "Enter the new name" << endl;
+                            getline(cin >> ws, doctors[i].name);
+                            cout << "This Field has been updated" << endl;
+                            break;
+
+                        case 2:
+                            cout << "Enter Speciality of Doctor" << endl;
+                            getline(cin >> ws, doctors[i].Speciality);
+                            cout << "This Field Has been updated" << endl;
+                            break;
+
+                        case 3:
+                            cout << "Enter The doctors Experience" << endl;
+                            getline(cin >> ws, doctors[i].doctors_experience);
+                            cout << "This field has been updated" << endl;
+                            break;
+
+                        case 4:
+                            cout << "Enter Contact no :" << endl;
+                            cin >> doctors[i].contact;
+                            cout << "This field has been updated" << endl;
+                            break;
+
+                        case 5:
+                            cout << " Enter Meeting Hours" << endl;
+                            getline(cin >> ws, doctors[i].meeting);
+                            cout << "This field has been updated" << endl;
+                            break;
+
+                        case 6:
+                            cout << "Update has been cancel" << endl;
+                            running = false;
+                            break;
+
+                        default:
+                            cout << "invalid input" << endl;
+                        }
+                    }
+                }
+            }
+            break;
+        }
+
+        case 5:
+        {
+            cout << "Enter the Id of the Doctor whom You want to delete : ";
+            getline(cin >> ws, id);
+
+            for (int i = 0; i < doctors.size(); i++)
+            {
+                if (doctors[i].doctors_id == id)
+                {
+                    doctors.erase(doctors.begin() + i);
+                    cout << "doctor details has been deleted" << endl;
+                }
+            }
+            break;
+        }
+
+        default:
+            cout << "invalid input" << endl;
+        }
+    }
+}
+
+
 void billingSystem() {
     displayTitle("Billing System");
     cout << "1. Generate Patient Bill" << endl;
@@ -302,7 +537,9 @@ void billingSystem() {
     int choice;
     cout << "Enter choice: ";
     cin >> choice;
-    
+  
+
+    // left and right modifiers are used to to align very line with each other  
     switch (choice) {
         case 1: {
             displayTitle("Generate Bill"); 
@@ -322,22 +559,40 @@ void billingSystem() {
                     repchar('-', 30);    
                     cout << "Bill Summary" << endl;
                     repchar('-', 30);
-                    cout << "Doctor Fee: " << setw(25) << p.charges.doctor << endl;
-                    cout << "Medical Fee: " << setw(25) << p.charges.medical << endl;
-                    cout << "Room Fee: " << setw(25) << p.charges.doctor << endl;
+                    cout << setw(25) << left << "Doctor Fee: " << right << p.charges.doctor << endl;
+                    cout << setw(25) << left << "Medical Fee: " << right << p.charges.medical << endl;
+                    cout << setw(25) << left << "Room Fee: " << right << p.charges.doctor << endl;
                     repchar('-', 30);
-                    cout << "Total Amount: " << setw(25) << p.charges.total << "PKR" << endl;
-                    cout << "Payment Status: " << setw(25) << p.charges.status;
+                    cout << setw(25) << left << "Total Amount: " << right << p.charges.total << " PKR" << endl;
+                    cout << setw(25) << left << "Payment Status: " << right << p.charges.status << endl << endl;
+                    cout << "Bill Generated Successfully!" << endl;
+                    
                 }
             } 
+        }
+
+        case 2: {
+            displayTitle("All Bills");             
+            cout << "No." << setw(15)  << "Patient ID" << setw(15) << "Name" << setw(15) << "Total(PKR)" << setw(15) << "Status" << endl;
+            repchar('-', 70);
+            for (int i = 0; i < patients.size(); i++) {
+                Patient p = patients[i];
+                cout << i << setw(15) << p.id << setw(15) << p.name << setw(15) << p.charges.total << setw(15) << p.charges.status << endl;
+            }
+        }
+
+        case 3: {
+             
         }
     }    
 }
 
+
 void mainMenu() {
     patients.push_back(testPatient);
     // patientManagement();
-    billingSystem();
+    doctorManagement();
+    // billingSystem();
 }
 int main() {
     mainMenu();
