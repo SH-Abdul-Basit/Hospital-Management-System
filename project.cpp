@@ -587,6 +587,10 @@ void billingSystem() {
     }    
 }
 
+void pharmacyManagement() {
+
+}
+
 
 void mainMenu() {
     patients.push_back(testPatient);
