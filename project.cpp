@@ -5,7 +5,11 @@
 #include <ctime>
 #include <iomanip>
 using namespace std;
+// TODO: Make main menu
+// TODO: Add switching between different features 
+// TODO: Abstract features of the code for more modularity
 
+//############## Basic structures Used ################################
 // Contains all the information about patient expenses
 struct Fee
 {
@@ -45,12 +49,14 @@ struct Pharmacy{
     int stock;
 };
 
+//############################################################################
 
-
-
+// Used for the patient management and billing system
 vector<Patient> patients;
+// Test patient remember to remove later in the final build
 Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergies"};
 
+//######################## Utility Functions #####################################33
 // Clear the screen and display the title
 void displayTitle(string title) 
 {
@@ -86,6 +92,8 @@ void repchar(char ch, int n)
     }
     cout << endl;
 }
+
+//###############################################################################
 
 void patientManagement() 
 {
@@ -587,10 +595,23 @@ void billingSystem() {
                 Patient p = patients[i];
                 cout << i << setw(15) << p.id << setw(15) << p.name << setw(15) << p.charges.total << setw(15) << p.charges.status << endl;
             }
+            break;
         }
 
         case 3: {
-             
+            string id;
+            cout << "Enter Patient ID to update bill: ";
+            getline(cin >> ws, id);
+
+            for (Patient& p: patients) {
+                if (p.id == id) {
+                    string status;
+                    cout << "Enter new Bill Status: ";
+                    getline(cin >> ws, status); 
+                    p.charges.status = status;
+                }
+            }  
+            break;
         }
     }    
 }
@@ -731,13 +752,12 @@ void pharmacyManagement() {
     }while(choice != 4);
 }
 
-
 void mainMenu() {
     patients.push_back(testPatient);
     //patientManagement();
-    pharmacyManagement();
+    //pharmacyManagement();
     //doctorManagement();
-    // billingSystem();
+    billingSystem();
 }
 int main() {
     mainMenu();
