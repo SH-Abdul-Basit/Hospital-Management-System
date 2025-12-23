@@ -28,6 +28,7 @@ struct Patient
     Fee charges; 
 };
 
+
 struct Doctor
 {
     string name;
@@ -37,6 +38,13 @@ struct Doctor
     string contact;
     string meeting;
 };
+
+struct Pharmacy{
+    string diseasename;
+    string medicinename;
+    int stock;
+};
+
 
 
 
@@ -588,14 +596,147 @@ void billingSystem() {
 }
 
 void pharmacyManagement() {
+    Pharmacy Med[12]={
+        {"FEVER","IBUPROFEN",340},
+        {"VOMITING","DOMPERIDONE",240},
+        {"THROATINFECTION","AZOTHROMYCIN",230},
+        {"OSTEOPOROSIS","ALBENDRONATE",340},
+        {"DIABETES","METFORMIN",130},
+        {"HEARTPATIENT","CLOPIDOGRIL",170},
+        {"ANTI-ALLERGIC","CETRIZINE",97},
+        {"ANTI-DEPRESSANT","ALPRAZOLAM",230},
+        {"HEADACHE","PANADOL",500},
+        {"MIGRAINE","NAPROXENE",190},
+        {"ACIDITY","OMEPRAZOLE",350},
+        {"STEROID","DEXAMETHRASONE",240}
+    };
 
+    int choice;
+    string patientDisease;
+    string selectedMedicine;
+    int issuequantity;
+    bool found;
+
+        cout<<"===================================================="<<endl;
+        cout<<endl;
+        cout<<"               HOSPITAL PHARMACY                    "<<endl;
+        cout<<endl;
+        cout<<"===================================================="<<endl;
+        cout<<endl;
+    do{
+
+        cout<<"1.ISSUE MEDICINE(BY DISEASE)"<<endl;
+        cout<<"2.UPDATE MEDICINE "<<endl;
+        cout<<"3.VIEW STOCK "<<endl;
+        cout<<"4.  EXIT    "<<endl;
+
+        cout<<"Enter your choice: ";
+        cin>>choice;
+
+        switch(choice){
+
+        case 1:{
+            cout<<"Enter Patient Disease : ";
+            cin>>patientDisease;
+            found = false;
+
+            cout<<"Suggested Medicine : "<<endl;
+
+            for(int i = 0; i < 12; i++){
+                if(Med[i].diseasename == patientDisease){
+                    cout<<" - "<<Med[i].medicinename<<endl;
+                    found = true;
+                }
+            }
+
+            if (!found){
+                cout << "No medicine available for this disease!\n";
+                break;
+            }
+
+            cout << "\nSelect medicine from above list: ";
+            cin >> selectedMedicine;
+
+            for (int i = 0; i < 12; i++){
+                if (Med[i].medicinename == selectedMedicine &&
+                    Med[i].diseasename == patientDisease){
+
+                    cout << "Previous Quantity: " << Med[i].stock << endl;
+                    cout << "Enter quantity to issue: ";
+                    cin >> issuequantity;
+
+                    if (issuequantity <= Med[i].stock){
+                        Med[i].stock -= issuequantity;
+                        cout << "Issued Quantity: " << issuequantity << endl;
+                        cout << "Remaining Quantity: " << Med[i].stock << endl;
+                    }
+                    else{
+                        cout << "Not enough stock!" << endl;
+                    }
+                    break;
+                }
+            }
+            break;
+        }
+
+        case 2:{
+            string medicinename;
+            found = false;
+
+            cout << "\nEnter medicine name (CAPS): ";
+            cin >> medicinename;
+
+            for (int i = 0; i < 12; i++){
+                if (Med[i].medicinename == medicinename){
+                    found = true;
+                    cout << "Current stock: " << Med[i].stock << endl;
+                    cout << "Enter new stock: ";
+                    cin >> Med[i].stock;
+                    cout << "Quantity updated successfully!\n";
+                    break;
+                }
+            }
+
+            if (!found){
+                cout << "Sorry, Medicine not found!" << endl;
+            }
+            break;
+        }
+
+        case 3:{
+            cout<<"=====VIEW UPDATED STOCK====="<<endl;
+            for (int i = 0; i < 12; i++){
+                cout << Med[i].diseasename << " | "
+                     << Med[i].medicinename << " | "
+                     << Med[i].stock << endl;
+            }
+            break;
+        }
+
+        case 4:{
+            cout<<"==================================="<<endl;;
+            cout<<"Thank you for Visiting our Pharmacy "<<endl;
+            cout<<"==================================="<<endl;
+            break;
+        }
+
+        default:{
+            cout<<"INVALID CHOICE!"<<endl;
+            cout<<"Please select 1-4 "<<endl;
+            break;
+        }
+
+        }
+
+    }while(choice != 4);
 }
 
 
 void mainMenu() {
     patients.push_back(testPatient);
-    // patientManagement();
-    doctorManagement();
+    //patientManagement();
+    pharmacyManagement();
+    //doctorManagement();
     // billingSystem();
 }
 int main() {
