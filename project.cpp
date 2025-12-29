@@ -60,7 +60,6 @@ Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergi
 // Clear the screen and display the title
 void displayTitle(string title) 
 {
-    system("clear");
     cout << "====================================" << endl << endl;
     cout << "         " << title << endl << endl;
     cout << "====================================" << endl;
@@ -158,11 +157,11 @@ void patientManagement()
                for (Patient p: patients) {
                    if (p.id == id) {
                        found = true;
-                       cout << "Id:" << setw(25 + 14) << p.id << endl;
-                       cout << "Name:" << setw(25 + 12) << p.name << endl;
-                       cout << "Age:" << setw(25 + 13) << p.age << endl;
-                       cout << "Contact:" << setw(25 + 9) << p.contact << endl;
-                       cout << "Disease / Symptom:" << setw(25) << p.status << endl;
+                       cout << setw(30) << left << "Id:" << right << p.id << endl;
+                       cout << setw(30) << left << "Name:" << right << p.name << endl;
+                       cout << setw(30) << left << "Age:" << right << p.age << endl;
+                       cout << setw(30) << left << "Contact:" << right << p.contact << endl;
+                       cout << setw(30) << left << "Disease / Symptom:" << right << p.status << endl;
                        break;
                    }
                }
@@ -298,7 +297,7 @@ void patientManagement()
                }
            }
 
-           dkefault: {
+           default: {
                 cout << "Invalid Optoin.";
            }
         }
@@ -314,6 +313,8 @@ void patientManagement()
     }
 }
 
+//################################# Doctor Managment ################################################
+// Find a doctor with a specific id and display their information 
 void searchings(vector<Doctor> doctors, string id)
 {
     bool found = false;
@@ -350,6 +351,7 @@ void searchings(vector<Doctor> doctors, string id)
     cout << endl << endl << endl;
 }
 
+// Display information of all the recorded doctors
 void table(vector<Doctor> doctors)
 {
     repchar('_', 70);
@@ -375,29 +377,33 @@ void table(vector<Doctor> doctors)
 
 void doctorManagement()
 {
-
+    // Resizabel doctor vectors for dynamically adding and removing doctors
     vector<Doctor> doctors;
 
     displayTitle("Doctor Management");
 
-        string id; 
+    string id; 
 
     int choice;
 
-    while (true)
+    bool looping = true;  
+
+    // Doctor Management loop
+    while (looping)
     {
         cout << "1) Add Doctor" << endl;
         cout << "2) View All Doctors" << endl;
         cout << "3) Search Doctor" << endl;
         cout << "4) Update Doctor Details" << endl;
         cout << "5) Delete Doctor" << endl;
+        cout << "6) Main Menu" << endl;
 
+        cout << "Enter your choice: ";
         cin >> choice;
 
         switch (choice)
         {
-        case 1:
-            {
+        case 1: {
             Doctor d;
             cout << "Enter Name of Doctor : ";
             getline(cin >> ws, d.name);
@@ -537,13 +543,19 @@ void doctorManagement()
             break;
         }
 
+        case 6:
+        {
+            looping = false;
+            break;
+        }
+
         default:
-            cout << "invalid input" << endl;
+            cout << "Invalid Choice" << endl;
         }
     }
 }
 
-
+//############################################# Billing System #####################################################
 void billingSystem() {
     displayTitle("Billing System");
     cout << "1. Generate Patient Bill" << endl;
@@ -616,7 +628,9 @@ void billingSystem() {
     }    
 }
 
+//############################################# Pharmacy System #########################################################
 void pharmacyManagement() {
+    // Dataset of all the available medicine
     Pharmacy Med[12]={
         {"FEVER","IBUPROFEN",340},
         {"VOMITING","DOMPERIDONE",240},
@@ -632,31 +646,27 @@ void pharmacyManagement() {
         {"STEROID","DEXAMETHRASONE",240}
     };
 
+    // Variable for storing various using inputs
     int choice;
     string patientDisease;
     string selectedMedicine;
     int issuequantity;
     bool found;
 
-        cout<<"===================================================="<<endl;
-        cout<<endl;
-        cout<<"               HOSPITAL PHARMACY                    "<<endl;
-        cout<<endl;
-        cout<<"===================================================="<<endl;
-        cout<<endl;
-    do{
+    displayTitle("Hospital Pharmacy");
 
-        cout<<"1.ISSUE MEDICINE(BY DISEASE)"<<endl;
-        cout<<"2.UPDATE MEDICINE "<<endl;
-        cout<<"3.VIEW STOCK "<<endl;
-        cout<<"4.  EXIT    "<<endl;
+    do {
+        cout<<"1. ISSUE MEDICINE(BY DISEASE)"<<endl;
+        cout<<"2. UPDATE MEDICINE "<<endl;
+        cout<<"3. VIEW STOCK "<<endl;
+        cout<<"4. MAIN MENU"<<endl;
 
         cout<<"Enter your choice: ";
         cin>>choice;
 
         switch(choice){
-
-        case 1:{
+        // Search for a specific disease name and display the required medicine 
+        case 1: {
             cout<<"Enter Patient Disease : ";
             cin>>patientDisease;
             found = false;
@@ -700,6 +710,7 @@ void pharmacyManagement() {
             break;
         }
 
+        // Manually change the stock quantity
         case 2:{
             string medicinename;
             found = false;
@@ -724,20 +735,20 @@ void pharmacyManagement() {
             break;
         }
 
+        // Viewing all the available medicine, DISEASE | MEDICINE | STOCK 
         case 3:{
-            cout<<"=====VIEW UPDATED STOCK====="<<endl;
+            displayTitle("VIEW STOCK");
             for (int i = 0; i < 12; i++){
                 cout << Med[i].diseasename << " | "
                      << Med[i].medicinename << " | "
                      << Med[i].stock << endl;
             }
+            repchar('-', 40);
             break;
         }
 
         case 4:{
-            cout<<"==================================="<<endl;;
             cout<<"Thank you for Visiting our Pharmacy "<<endl;
-            cout<<"==================================="<<endl;
             break;
         }
 
@@ -747,18 +758,51 @@ void pharmacyManagement() {
             break;
         }
 
-        }
+    }
 
     }while(choice != 4);
 }
 
+//############################################################ Main Menu #########################################################
 void mainMenu() {
-    patients.push_back(testPatient);
-    //patientManagement();
-    //pharmacyManagement();
-    //doctorManagement();
-    billingSystem();
+    bool running = true;
+
+    while(running) {
+        displayTitle("Main Menu");
+        cout << "1. Patient Managment" << endl;
+        cout << "2. Doctor Managment" << endl;
+        cout << "3. Billing System" << endl;
+        cout << "4. Pharamacy System" << endl;
+        cout << "5. Exit" << endl;
+
+        int choice;
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+
+        switch(choice) {
+            case 1:
+                patientManagement();
+                break;
+            case 2:
+                doctorManagement();
+                break;
+            case 3:
+                billingSystem();
+                break;
+            case 4:
+                pharmacyManagement();
+                break;
+            case 5:
+                cout << "Thank you for using Hospital Management System" << endl;
+                running = false;
+                break;
+            default:
+                cout << "Invalid Choice";
+        }
+    }
 }
+
 int main() {
     mainMenu();
     return 0;
