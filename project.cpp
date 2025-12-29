@@ -5,10 +5,6 @@
 #include <ctime>
 #include <iomanip>
 using namespace std;
-// TODO: Make main menu
-// TODO: Add switching between different features 
-// TODO: Abstract features of the code for more modularity
-
 //############## Basic structures Used ################################
 // Contains all the information about patient expenses
 struct Fee
@@ -49,12 +45,11 @@ struct Pharmacy{
     int stock;
 };
 
-//############################################################################
 
 // Used for the patient management and billing system
 vector<Patient> patients;
 // Test patient remember to remove later in the final build
-Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergies"};
+//Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergies"};
 
 //######################## Utility Functions #####################################33
 // Clear the screen and display the title
@@ -68,7 +63,6 @@ void displayTitle(string title)
 
 
 // Generate a random password
-// TODO: Add random alphabet as well 
 string generateId(int length) 
 {
     string id;
@@ -81,8 +75,6 @@ string generateId(int length)
     return id; 
 }
 
-
-
 void repchar(char ch, int n) 
 {
     for (int i = 0; i < n; i++)
@@ -92,8 +84,7 @@ void repchar(char ch, int n)
     cout << endl;
 }
 
-//###############################################################################
-
+//#################################### Patient Management #################################
 void patientManagement() 
 {
     bool running = true;
