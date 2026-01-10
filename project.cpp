@@ -7,6 +7,13 @@
 
 using namespace std;
 
+// ANSI color codes
+const string RED = "\033[31m";
+const string GREEN = "\033[32m";
+const string YELLOW = "\033[33m";
+const string CYAN = "\033[36m";
+const string RESET = "\033[0m";
+
 //############## Basic structures Used ################################
 // Contains all the information about patient expenses
 struct Fee
@@ -38,25 +45,18 @@ struct Pharmacy{
     int stock;
 };
 
-
-// Used for the patient management and billing system
 vector<Patient> patients;
-// Test patient remember to remove later in the final build
-//Patient testPatient = {"00000", "Abdul Basit", 20, 'M', "0316-9665169", "Allergies"};
 
 //######################## Utility Functions #####################################33
-// Clear the screen and display the title
 void displayTitle(string title) 
 {
     cout << endl;
-    cout << "====================================" << endl << endl;
-    cout << "\t" << title << endl << endl;
-    cout << "====================================" << endl;
+    cout << CYAN << "====================================" << RESET << endl << endl;
+    cout << CYAN << "\t" << title << RESET << endl << endl;
+    cout << CYAN << "====================================" << RESET << endl;
     cout << endl << endl;
 }
 
-
-// Generate a random password
 string generateId(int length) 
 {
     string id;
@@ -83,22 +83,19 @@ void patientManagement()
 {
     bool running = true;
 
-    // Patient vector for dynamically adding patients
     while (running) {
     int option;
     displayTitle("Patient Mangement");
-    cout << "1) Add New Patient" << endl;
-    cout << "2) View Patient Records" << endl;
-    cout << "3) Search Patient by ID" << endl;
-    cout << "4) Update Patient Info" << endl;
-    cout << "5) Delete Patient Record" << endl;
-    cout << "6) Main Menu" << endl;
+    cout << YELLOW << "1) Add New Patient" << RESET << endl;
+    cout << YELLOW << "2) View Patient Records" << RESET << endl;
+    cout << YELLOW << "3) Search Patient by ID" << RESET << endl;
+    cout << YELLOW << "4) Update Patient Info" << RESET << endl;
+    cout << YELLOW << "5) Delete Patient Record" << RESET << endl;
+    cout << YELLOW << "6) Main Menu" << RESET << endl;
 
     cout << endl;
-    cout << "Enter choice: ";
+    cout << CYAN << "Enter choice: " << RESET;
     cin >> option;
-
-    // Note: cin >> ws is for clearing the buffer (removing /n)
     
         switch (option) 
         {
@@ -117,20 +114,24 @@ void patientManagement()
                 getline(cin >> ws, patient.status);
 
                 patient.id = generateId(5);
-
                 patients.push_back(patient);
 
-                cout << endl;
-                cout << "Patient added successfully!" << endl; 
-                cout << "Generated Patient ID: " << patient.id; 
+                cout << GREEN << endl << "Patient added successfully!" << RESET << endl; 
+                cout << GREEN << "Generated Patient ID: " << patient.id << RESET; 
                 break;
             }
+
            case 2: {
                displayTitle("PATIENT RECORDS");
-               cout << "ID" << setw(25) << "Name" << setw(30) << "Age" << setw(15) << "Gender" << setw(15) << "Contact" << setw(25) << "Disease" << endl;
+               cout << CYAN << "ID" << setw(25) << "Name" << setw(30) << "Age"
+                    << setw(15) << "Gender" << setw(15) << "Contact"
+                    << setw(25) << "Disease" << RESET << endl;
                cout << "-----------------------------------------------------------------------------------------------------------------------------" << endl;
                for (Patient p: patients) {
-                    cout << p.id << setw(25) << p.name  << setw(30) << p.age << setw(15) << p.gender << setw(15) << p.contact << setw(25) << p.status << endl;
+                    cout << p.id << setw(25) << p.name  << setw(30)
+                         << p.age << setw(15) << p.gender
+                         << setw(15) << p.contact << setw(25)
+                         << p.status << endl;
                }
                break;
            }
@@ -144,17 +145,19 @@ void patientManagement()
                for (Patient p: patients) {
                    if (p.id == id) {
                        found = true;
+                       cout << GREEN;
                        cout << setw(30) << left << "Id:" << right << p.id << endl;
                        cout << setw(30) << left << "Name:" << right << p.name << endl;
                        cout << setw(30) << left << "Age:" << right << p.age << endl;
                        cout << setw(30) << left << "Contact:" << right << p.contact << endl;
                        cout << setw(30) << left << "Disease / Symptom:" << right << p.status << endl;
+                       cout << RESET;
                        break;
                    }
                }
 
                if (found == false) {
-                   cout << "No Patient Found with this ID.";
+                   cout << RED << "No Patient Found with this ID." << RESET;
                }
                break;
            }
@@ -168,7 +171,7 @@ void patientManagement()
                for (Patient& p: patients) {
                    if (p.id == id) {
                        found = true;
-                       cout << "Patient Found!" << endl;
+                       cout << GREEN << "Patient Found!" << RESET << endl;
                        displayTitle("Current Information");
                        cout << setw(25) << left << "1. Id:" << right << p.id << endl;
                        cout << setw(25) << left << "2. Name:" << right << p.name << endl;
@@ -176,13 +179,14 @@ void patientManagement()
                        cout << setw(25) << left << "4. Contact:" << right << p.contact << endl;
                        cout << setw(25) << left << "5. Disease / Symptom:" << right << p.status << endl << endl;
 
+                       cout << YELLOW;
                        cout << "Which field do you want to update?" << endl;
                        cout << "1. Name" << endl;
                        cout << "2. Age" << endl;
                        cout << "3. Gender" << endl;
                        cout << "4. Contact" << endl;
                        cout << "5. Disease / Symptom" << endl;
-                       cout << "6. Cancel Update" << endl << endl;
+                       cout << "6. Cancel Update" << RESET << endl << endl;
 
                        int choice;
                        cout << "Enter Choice: ";
@@ -196,7 +200,6 @@ void patientManagement()
                                 p.name = name;
                                 break;
                            }
-
                            case 2: {
                                 int age;
                                 cout << "Enter New Name: ";
@@ -204,7 +207,6 @@ void patientManagement()
                                 p.age = age;
                                 break;
                            }
-
                            case 3: {
                                 char gender;
                                 cout << "Enter New Gender: ";
@@ -212,7 +214,6 @@ void patientManagement()
                                 p.gender = gender;
                                 break;
                            }
-
                            case 4: {
                                 string contact;
                                 cout << "Enter New Contact: ";
@@ -220,7 +221,6 @@ void patientManagement()
                                 p.contact = contact;
                                 break;
                            }
-                                
                            case 5: {
                                 string status;
                                 cout << "Enter New Disease / Symptom: ";
@@ -228,23 +228,21 @@ void patientManagement()
                                 p.status = status;
                                 break;
                            }
-
                            case 6: {
-                                cout << "Update Cancelled!" << endl;
+                                cout << RED << "Update Cancelled!" << RESET << endl;
                            }
                        }
 
                        if (choice != 6) {
-                            cout << "Updating record... " << endl;
-                            cout << "Patient info updated successfully!";
+                            cout << GREEN << "Updating record... " << endl;
+                            cout << "Patient info updated successfully!" << RESET;
                        }
-
                        break;
                    }
                }
 
                if (found == false) {
-                   cout << "No Patient Found with this ID.";
+                   cout << RED << "No Patient Found with this ID." << RESET;
                }               
                break;
            }
@@ -261,26 +259,26 @@ void patientManagement()
                     if (p.id == id) {
                        displayTitle("Current Information");
                        found = true;
-                       cout << "1. Id:" << setw(25 + 14 + 3) << p.id << endl;
-                       cout << "2. Name:" << setw(25 + 12 + 3) << p.name << endl;
-                       cout << "3. Age:" << setw(25 + 13 + 3) << p.age << endl;
-                       cout << "4. Contact:" << setw(25 + 9 + 3) << p.contact << endl;
-                       cout << "5. Disease / Symptom:" << setw(25 + 3) << p.status << endl << endl;
+                       cout << setw(25 + 14 + 3) << p.id << endl;
+                       cout << setw(25 + 12 + 3) << p.name << endl;
+                       cout << setw(25 + 13 + 3) << p.age << endl;
+                       cout << setw(25 + 9 + 3) << p.contact << endl;
+                       cout << setw(25 + 3) << p.status << endl << endl;
 
-                       cout << "Do you want to delete this record(y/n): ";
+                       cout << YELLOW << "Do you want to delete this record(y/n): " << RESET;
                        char ans;
                        cin >> ans;
 
                        if (ans == 'y') {
                            patients.erase(patients.begin() + i);
-                           cout << "Deleting record..." << endl;
-                           cout << "Record Deleted!!";
+                           cout << RED << "Deleting record..." << endl;
+                           cout << "Record Deleted!!" << RESET;
                        } 
                     }
                 }
 
                if (found == false) {
-                   cout << "No Patient Found with this ID.";
+                   cout << RED << "No Patient Found with this ID." << RESET;
                }
            }
 
@@ -290,7 +288,7 @@ void patientManagement()
            }
 
            default: {
-                cout << "Invalid Optoin.";
+                cout << RED << "Invalid Optoin." << RESET;
            }
         }
     }
@@ -299,14 +297,13 @@ void patientManagement()
 //############################################# Billing System #####################################################
 void billingSystem() {
     displayTitle("Billing System");
-    cout << "1. Generate Patient Bill" << endl;
-    cout << "2. View All Bills" << endl;
-    cout << "3. Update Payment Status" << endl;
-    cout << "4. Main Menu" << endl << endl; 
+    cout << YELLOW << "1. Generate Patient Bill" << RESET << endl;
+    cout << YELLOW << "2. View All Bills" << RESET << endl;
+    cout << YELLOW << "3. Update Payment Status" << RESET << endl;
+    cout << YELLOW << "4. Main Menu" << RESET << endl << endl; 
     int choice;
-    cout << "Enter choice: ";
+    cout << CYAN << "Enter choice: " << RESET;
     cin >> choice;
-  
 
     switch (choice) {
         case 1: {
@@ -316,7 +313,6 @@ void billingSystem() {
             getline(cin >> ws, id);
             for (Patient& p: patients) {
                 if (p.id == id) {
-                    cout << endl;
                     cout << "Enter Doctor Fee: ";
                     cin >> p.charges.doctor;
                     cout << "Enter Medical Fee: ";
@@ -324,30 +320,34 @@ void billingSystem() {
                     cout << "Enter Room Fee: ";
                     cin >> p.charges.room; 
                     p.charges.total = p.charges.doctor + p.charges.medical + p.charges.room;
+
                     repchar('-', 30);    
-                    cout << "Bill Summary" << endl;
+                    cout << CYAN << "Bill Summary" << RESET << endl;
                     repchar('-', 30);
 
-                    // left and right modifiers are used to to align very line with each other  
                     cout << setw(25) << left << "Doctor Fee: " << right << p.charges.doctor << endl;
                     cout << setw(25) << left << "Medical Fee: " << right << p.charges.medical << endl;
                     cout << setw(25) << left << "Room Fee: " << right << p.charges.doctor << endl;
                     repchar('-', 30);
-                    cout << setw(25) << left << "Total Amount: " << right << p.charges.total << " PKR" << endl;
+                    cout << GREEN << setw(25) << left << "Total Amount: " << right << p.charges.total << " PKR" << RESET << endl;
                     cout << setw(25) << left << "Payment Status: " << right << p.charges.status << endl << endl;
-                    cout << "Bill Generated Successfully!" << endl;
-                    
+                    cout << GREEN << "Bill Generated Successfully!" << RESET << endl;
                 }
             } 
         }
 
         case 2: {
             displayTitle("All Bills");             
-            cout << "No." << setw(15)  << "Patient ID" << setw(15) << "Name" << setw(15) << "Total(PKR)" << setw(15) << "Status" << endl;
+            cout << CYAN << "No." << setw(15)  << "Patient ID" << setw(15)
+                 << "Name" << setw(15) << "Total(PKR)" << setw(15)
+                 << "Status" << RESET << endl;
             repchar('-', 70);
             for (int i = 0; i < patients.size(); i++) {
                 Patient p = patients[i];
-                cout << i << setw(15) << p.id << setw(15) << p.name << setw(15) << p.charges.total << setw(15) << p.charges.status << endl;
+                cout << i << setw(15) << p.id << setw(15)
+                     << p.name << setw(15)
+                     << p.charges.total << setw(15)
+                     << p.charges.status << endl;
             }
             break;
         }
@@ -363,6 +363,7 @@ void billingSystem() {
                     cout << "Enter new Bill Status: ";
                     getline(cin >> ws, status); 
                     p.charges.status = status;
+                    cout << GREEN << "Payment status updated!" << RESET << endl;
                 }
             }  
             break;
@@ -372,23 +373,15 @@ void billingSystem() {
 
 //############################################# Pharmacy System #########################################################
 void pharmacyManagement() {
-    // Dataset of all the available medicine
     Pharmacy Med[12]={
-        {"FEVER","IBUPROFEN",340},
-        {"VOMITING","DOMPERIDONE",240},
-        {"THROATINFECTION","AZOTHROMYCIN",230},
-        {"OSTEOPOROSIS","ALBENDRONATE",340},
-        {"DIABETES","METFORMIN",130},
-        {"HEARTPATIENT","CLOPIDOGRIL",170},
-        {"ANTI-ALLERGIC","CETRIZINE",97},
-        {"ANTI-DEPRESSANT","ALPRAZOLAM",230},
-        {"HEADACHE","PANADOL",500},
-        {"MIGRAINE","NAPROXENE",190},
-        {"ACIDITY","OMEPRAZOLE",350},
-        {"STEROID","DEXAMETHRASONE",240}
+        {"FEVER","IBUPROFEN",340},{"VOMITING","DOMPERIDONE",240},
+        {"THROATINFECTION","AZOTHROMYCIN",230},{"OSTEOPOROSIS","ALBENDRONATE",340},
+        {"DIABETES","METFORMIN",130},{"HEARTPATIENT","CLOPIDOGRIL",170},
+        {"ANTI-ALLERGIC","CETRIZINE",97},{"ANTI-DEPRESSANT","ALPRAZOLAM",230},
+        {"HEADACHE","PANADOL",500},{"MIGRAINE","NAPROXENE",190},
+        {"ACIDITY","OMEPRAZOLE",350},{"STEROID","DEXAMETHRASONE",240}
     };
 
-    // Variable for storing various using inputs
     int choice;
     string patientDisease;
     string selectedMedicine;
@@ -398,36 +391,35 @@ void pharmacyManagement() {
     displayTitle("Hospital Pharmacy");
 
     do {
-        cout<<"1. ISSUE MEDICINE(BY DISEASE)"<<endl;
-        cout<<"2. UPDATE MEDICINE "<<endl;
-        cout<<"3. VIEW STOCK "<<endl;
-        cout<<"4. MAIN MENU"<<endl;
+        cout << YELLOW << "1. ISSUE MEDICINE(BY DISEASE)" << RESET << endl;
+        cout << YELLOW << "2. UPDATE MEDICINE " << RESET << endl;
+        cout << YELLOW << "3. VIEW STOCK " << RESET << endl;
+        cout << YELLOW << "4. MAIN MENU" << RESET << endl;
 
-        cout<<"Enter your choice: ";
-        cin>>choice;
+        cout << "Enter your choice: ";
+        cin >> choice;
 
         switch(choice){
-        // Search for a specific disease name and display the required medicine 
         case 1: {
-            cout<<"Enter Patient Disease : ";
-            cin>>patientDisease;
+            cout << "Enter Patient Disease : ";
+            cin >> patientDisease;
             found = false;
 
-            cout<<"Suggested Medicine : "<<endl;
+            cout << CYAN << "Suggested Medicine :" << RESET << endl;
 
             for(int i = 0; i < 12; i++){
                 if(Med[i].diseasename == patientDisease){
-                    cout<<" - "<<Med[i].medicinename<<endl;
+                    cout << " - " << Med[i].medicinename << endl;
                     found = true;
                 }
             }
 
             if (!found){
-                cout << "No medicine available for this disease!\n";
+                cout << RED << "No medicine available for this disease!" << RESET << endl;
                 break;
             }
 
-            cout << "\nSelect medicine from above list: ";
+            cout << "Select medicine from above list: ";
             cin >> selectedMedicine;
 
             for (int i = 0; i < 12; i++){
@@ -440,11 +432,11 @@ void pharmacyManagement() {
 
                     if (issuequantity <= Med[i].stock){
                         Med[i].stock -= issuequantity;
-                        cout << "Issued Quantity: " << issuequantity << endl;
+                        cout << GREEN << "Issued Quantity: " << issuequantity << RESET << endl;
                         cout << "Remaining Quantity: " << Med[i].stock << endl;
                     }
                     else{
-                        cout << "Not enough stock!" << endl;
+                        cout << RED << "Not enough stock!" << RESET << endl;
                     }
                     break;
                 }
@@ -452,12 +444,11 @@ void pharmacyManagement() {
             break;
         }
 
-        // Manually change the stock quantity
         case 2:{
             string medicinename;
             found = false;
 
-            cout << "\nEnter medicine name (CAPS): ";
+            cout << "Enter medicine name (CAPS): ";
             cin >> medicinename;
 
             for (int i = 0; i < 12; i++){
@@ -466,40 +457,38 @@ void pharmacyManagement() {
                     cout << "Current stock: " << Med[i].stock << endl;
                     cout << "Enter new stock: ";
                     cin >> Med[i].stock;
-                    cout << "Quantity updated successfully!\n";
+                    cout << GREEN << "Quantity updated successfully!" << RESET << endl;
                     break;
                 }
             }
 
             if (!found){
-                cout << "Sorry, Medicine not found!" << endl;
+                cout << RED << "Sorry, Medicine not found!" << RESET << endl;
             }
             break;
         }
 
-        // Viewing all the available medicine, DISEASE | MEDICINE | STOCK 
         case 3:{
             displayTitle("VIEW STOCK");
             for (int i = 0; i < 12; i++){
-                cout << Med[i].diseasename << " | "
-                     << Med[i].medicinename << " | "
-                     << Med[i].stock << endl;
+                cout << GREEN << Med[i].diseasename << RESET << " | "
+                     << CYAN << Med[i].medicinename << RESET << " | "
+                     << YELLOW << Med[i].stock << RESET << endl;
             }
             repchar('-', 40);
             break;
         }
 
         case 4:{
-            cout<<"Thank you for Visiting our Pharmacy "<<endl;
+            cout << GREEN << "Thank you for Visiting our Pharmacy " << RESET << endl;
             break;
         }
 
         default:{
-            cout<<"INVALID CHOICE!"<<endl;
-            cout<<"Please select 1-4 "<<endl;
+            cout << RED << "INVALID CHOICE!" << RESET << endl;
+            cout << "Please select 1-4 " << endl;
             break;
         }
-
     }
 
     }while(choice != 4);
@@ -511,15 +500,14 @@ void mainMenu() {
 
     while(running) {
         displayTitle("Main Menu");
-        cout << "1. Patient Managment" << endl;
-        cout << "2. Pharamacy System" << endl;
-        cout << "3. Billing System" << endl;
-        cout << "4. Exit" << endl;
+        cout << GREEN << "1. Patient Managment" << RESET << endl;
+        cout << GREEN << "2. Pharamacy System" << RESET << endl;
+        cout << GREEN << "3. Billing System" << RESET << endl;
+        cout << RED << "4. Exit" << RESET << endl;
 
         int choice;
         cout << "Enter your choice: ";
         cin >> choice;
-
 
         switch(choice) {
             case 1:
@@ -532,11 +520,11 @@ void mainMenu() {
                 billingSystem();
                 break;
             case 4:
-                cout << "Thank you for using Hospital Management System" << endl;
+                cout << GREEN << "Thank you for using Hospital Management System" << RESET << endl;
                 running = false;
                 break;
             default:
-                cout << "Invalid Choice";
+                cout << RED << "Invalid Choice" << RESET;
         }
     }
 }
@@ -545,3 +533,4 @@ int main() {
     mainMenu();
     return 0;
 }
+
